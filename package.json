@@ -1,12 +1,18 @@
 {
-  "name": "cplex-opl-vscode",
-  "displayName": "cplex-opl-vscode",
-  "description": "",
-  "version": "0.0.1",
+  "name": "cplex-opl",
+  "displayName": "CPLEX OPL",
+  "description": "Native support for IBM ILOG CPLEX Optimization Programming Language (OPL) in Visual Studio Code.",
+  "version": "1.4.2",
+  "publisher": "JAANULO",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JAANULO/cplex-opl-vscode.git"
+  },
   "engines": {
     "vscode": "^1.118.0"
   },
   "categories": [
+    "Programming Languages",
     "Other"
   ],
   "activationEvents": [],

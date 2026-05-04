@@ -16,27 +16,26 @@ Celem projektu jest stworzenie środowiska do pracy z językiem OPL w Visual Stu
 Poniższa lista odzwierciedla funkcje wdrożone już w wersji JetBrains (stan na wersję 1.4.2), które musimy zaimplementować tutaj.
 
 ### Szablony i podstawa
-- `TODO` **Szablony plików:** Snippety (np. akcja tworzenia modelu/danych).
-- `DONE` Rejestracja języka OPL (pliki `.mod` i `.dat`). *(zrealizowane w package.json scaffolding)*
-- `TODO` Syntax Highlighting (kolorowanie składni oparte na gramatyce TextMate `.tmLanguage.json`).
+- `DONE` **Szablony plików:** Snippety `model`, `rng`, `dv`, `st`, `fa`, `sm`, `tup`, `exec` (`snippets/opl.code-snippets`).
+- `DONE` Rejestracja języka OPL (pliki `.mod` i `.dat`).
+- `DONE` Syntax Highlighting (kolorowanie składni — gramatyka TextMate `syntaxes/opl.tmLanguage.json`).
 - `TODO` Ikony dla plików `.mod` i `.dat` (deklaracje iconTheme w `package.json`).
 
 ### Code Intelligence (LSP / Providers)
-- `TODO` Code Completion (autouzupełnianie słów kluczowych przez `CompletionItemProvider`).
-- `TODO` Obsługa skrótu `Ctrl+/` (komentowanie) — definicja `language-configuration.json`.
-- `TODO` Podświetlanie par nawiasów `{}`, `()`, `[]` (`language-configuration.json`).
-- `TODO` Snippety z JetBrains (skróty: `model`, `rng`, `dv`, `st`, `fa`, `sm`, `tup`, `exec`) — przeniesienie jako JSON.
-- `TODO` **Formatter:** Formatowanie kodu OPL (`DocumentFormattingEditProvider`).
-- `TODO` **Structure View:** Interaktywne drzewo nawigacji (`DocumentSymbolProvider`).
-- `TODO` **Contextual Autocomplete:** Semantyczne podpowiadanie zmiennych.
+- `DONE` Code Completion — słowa kluczowe i funkcje wbudowane (`src/providers/completion.ts`).
+- `DONE` Obsługa skrótu `Ctrl+/` (komentowanie) — `language-configuration.json`.
+- `DONE` Podświetlanie par nawiasów `{}`, `()`, `[]` — `language-configuration.json`.
+- `DONE` **Formatter:** Formatowanie kodu OPL — `Shift+Alt+F` (`src/providers/formatter.ts`).
+- `DONE` **Structure View:** Widok drzewa modelu (Outline) (`src/providers/symbol.ts`).
+- `TODO` **Contextual Autocomplete:** Semantyczne podpowiadanie zmiennych z aktualnego pliku.
 - `TODO` **Annotator:** Walidacja błędów w locie (Diagnostyki LSP).
 
 ### Execution Engine (Krytyczne — MVP)
 Warstwa odpowiedzialna za uruchamianie modeli i integrację z solverem CPLEX (`oplrun`).
-- `TODO` Uruchamianie modeli OPL z poziomu IDE (VS Code Tasks lub polecenie w Command Palette).
-- `TODO` **File Type Support:** Automatyczne łączenie par plików `.mod` i `.dat` przy uruchamianiu.
-- `TODO` Integracja z konsolą (Output Channel w VS Code).
-- `TODO` **Integracja środowiska CPLEX:** Automatyczne wykrywanie instalacji (heurystyka ścieżek) i ustawienia w `settings.json`.
+- `DONE` Uruchamianie modeli OPL z poziomu IDE — przycisk Play i Command Palette (`src/commands/runModel.ts`).
+- `DONE` **File Type Support:** Automatyczne łączenie par plików `.mod` i `.dat` przy uruchamianiu.
+- `DONE` Integracja z terminalem VS Code (Output w oknie terminala).
+- `DONE` **Integracja środowiska CPLEX:** Heurystyka ścieżek + ustawienie `cplex-opl.oplrunPath` w `settings.json`.
 
 ---
 

@@ -12,3 +12,6 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+.github/**
+do_zrobienia.md
+publikacja_vscode.md

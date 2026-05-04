@@ -6,6 +6,23 @@
 
 ## [Unreleased]
 
+## [1.4.2-vscode] - 2026-05-04
+
+### Added (VS Code)
+- **Language Registration:** Pliki `.mod` i `.dat` są teraz w pełni rozpoznawane jako język OPL.
+- **Syntax Highlighting:** Kolorowanie składni oparte na gramatyce TextMate (słowa kluczowe, typy, komentarze, liczby, łańcuchy).
+- **Language Configuration:** Automatyczne domykanie nawiasów `{}`, `()`, `[]`, obsługa komentarzy liniowych `//` i blokowych `/* */`.
+- **Snippets:** Przeniesione Live Templates z JetBrains — skróty `model`, `rng`, `dv`, `st`, `fa`, `sm`, `tup`, `exec`.
+- **Run OPL Model:** Polecenie i przycisk Play (widoczny dla plików `.mod`) wywołujący lokalny solver `oplrun`.
+- **Auto-pairing:** Automatyczne parowanie pliku `.dat` o tej samej nazwie przy uruchomieniu modelu.
+- **CPLEX Auto-detect:** Heurystyczne wyszukiwanie `oplrun` w zmiennej środowiskowej `CPLEX_STUDIO_DIR` i standardowych lokalizacjach Windows.
+- **Settings:** Ustawienie `cplex-opl.oplrunPath` do ręcznego wskazania ścieżki do solvera.
+- **Code Completion:** Podpowiadanie słów kluczowych i wbudowanych funkcji OPL.
+- **Formatter:** Podstawowe formatowanie kodu (`Shift+Alt+F`) — wcięcia, spacje wokół operatorów.
+- **Structure View (Outline):** Interaktywne drzewo modelu pokazujące zmienne decyzyjne, funkcję celu, blok ograniczeń i skrypty.
+- **GitHub Actions CI:** Automatyczne testy na Ubuntu, Windows i macOS przy każdym commicie.
+- **GitHub Actions Release:** Automatyczna publikacja na VS Code Marketplace przy każdym GitHub Release.
+
 ## [1.4.2] - 2026-05-02
 
 ### Changed
