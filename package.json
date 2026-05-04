@@ -35,10 +35,31 @@
     ],
     "commands": [
       {
-        "command": "cplex-opl-vscode.helloWorld",
-        "title": "Hello World"
+        "command": "cplex-opl-vscode.runModel",
+        "title": "Run OPL Model",
+        "icon": "$(play)"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "cplex-opl-vscode.runModel",
+          "when": "resourceExtname == .mod",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "CPLEX OPL",
+      "properties": {
+        "cplex-opl.oplrunPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the oplrun executable (e.g. C:\\Program Files\\IBM\\ILOG\\CPLEX_Studio221\\opl\\bin\\x64_win64\\oplrun.exe). If empty, it attempts auto-detect."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
