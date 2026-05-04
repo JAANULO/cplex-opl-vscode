@@ -12,6 +12,27 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "opl",
+        "aliases": ["OPL", "opl", "CPLEX"],
+        "extensions": [".mod", ".dat"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "opl",
+        "scopeName": "source.opl",
+        "path": "./syntaxes/opl.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "opl",
+        "path": "./snippets/opl.code-snippets"
+      }
+    ],
     "commands": [
       {
         "command": "cplex-opl-vscode.helloWorld",

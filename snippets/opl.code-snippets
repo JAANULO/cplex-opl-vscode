@@ -1,0 +1,82 @@
+{
+    "Model Skeleton": {
+        "prefix": "model",
+        "body": [
+            "// OPL Model",
+            "// ${1:model name}",
+            "",
+            "// --- Data declarations ---",
+            "$2",
+            "",
+            "// --- Decision variables ---",
+            "$3",
+            "",
+            "// --- Objective function ---",
+            "${4|minimize,maximize|} $5;",
+            "",
+            "// --- Constraints ---",
+            "subject to {",
+            "\t$0",
+            "}"
+        ],
+        "description": "Standardowy szkielet modelu OPL"
+    },
+    "Range": {
+        "prefix": "rng",
+        "body": [
+            "range ${1:Name} = 1..${2:n};$0"
+        ],
+        "description": "Deklaracja zakresu (range)"
+    },
+    "Decision Variable": {
+        "prefix": "dv",
+        "body": [
+            "dvar ${1|int,float,boolean|} ${2:varName}${3:[${4:range}]};$0"
+        ],
+        "description": "Deklaracja zmiennej decyzyjnej"
+    },
+    "Subject To": {
+        "prefix": "st",
+        "body": [
+            "subject to {",
+            "\t$0",
+            "}"
+        ],
+        "description": "Blok ograniczeń (subject to)"
+    },
+    "Forall": {
+        "prefix": "fa",
+        "body": [
+            "forall (${1:i} in ${2:Range}) {",
+            "\t$0",
+            "}"
+        ],
+        "description": "Pętla forall"
+    },
+    "Sum": {
+        "prefix": "sm",
+        "body": [
+            "sum (${1:i} in ${2:Range}) ${3:expr}$0"
+        ],
+        "description": "Operator sumy"
+    },
+    "Tuple": {
+        "prefix": "tup",
+        "body": [
+            "tuple ${1:Name} {",
+            "\t${2:int} ${3:field1};",
+            "\t$0",
+            "};"
+        ],
+        "description": "Deklaracja krotki (tuple)"
+    },
+    "Execute": {
+        "prefix": "exec",
+        "body": [
+            "execute ${1:Name} {",
+            "\t$0",
+            "}"
+        ],
+        "description": "Blok skryptu OPLScript (execute)"
+    }
+}
