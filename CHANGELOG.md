@@ -6,6 +6,39 @@
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-05-05
+
+### Added (VS Code)
+- **Intelligence Update:** Wdrożono `Find Usages` (ReferenceProvider) oraz `Rename Refactoring` (RenameProvider) dla wszystkich identyfikatorów OPL.
+- **UX Update:** Dodano `Hover Information` (HoverProvider) — podgląd typu i definicji zmiennej po najechaniu myszką.
+- **Smart Run:** Możliwość uruchamiania modelu bezpośrednio z pliku `.dat` (automatyczne parowanie z pasującym `.mod`).
+- **Data Generator:** Nowa komenda `Generate .dat Skeleton` (dostępna z menu kontekstowego `.mod`) automatycznie tworzy szkielet danych dla parametrów modelu.
+- **Engineering Diagnostics:**
+    - **Linearity Auditor:** Ostrzeganie o nieliniowościach (np. mnożenie zmiennych decyzyjnych `x * y`).
+    - **CP Auto-Switcher:** Ostrzeganie o braku dyrektywy `using CP;` przy użyciu słów kluczowych szeregowania.
+
+### Changed (VS Code)
+- **Navigation:** Zoptymalizowano nazwy symboli w Structure View (Outline) dla lepszej czytelności Breadcrumbs.
+
+## [1.4.4] - 2026-05-05
+
+### Added (VS Code)
+- **Branding & Icons:** Dodano dedykowane ikony dla plików `.mod` i `.dat` oraz logotyp wtyczki (pełna parzystość wizualna z JetBrains).
+- **Annotator:** `DONE` **Annotator:** Walidacja błędów w locie (duplikaty, średniki, bloki, niezdefiniowane zmienne, OPLScript).
+- **Contextual Autocomplete:** Rozszerzono autouzupełnianie o nazwy zmiennych zdefiniowanych przez użytkownika w aktualnym pliku.
+- **Enhanced Syntax Highlighting:** Dodano wsparcie dla CP (`pulse`, `step`), operatorów skryptowych i funkcji wbudowanych.
+- **Go to Declaration:** `DONE` Wsparcie nawigacji do deklaracji dla wszystkich symboli OPL.
+
+### Changed (VS Code)
+- **Compatibility:** Obniżono wymaganą wersję VS Code do 1.107.0, aby zapewnić wsparcie dla szerszej gamy instalacji.
+
+### Fixed
+- **Critical:** Nested scope detection for iterators (Brace counting logic).
+- Extension activation reliability on some systems.
+- Formatter stability for scripts and nested blocks.
+- False positive errors in comments (`//`, `/* */`) and strings (`""`).
+- Performance: Added diagnostic debouncing (500ms) for smoother typing.
+
 ## [1.4.2-vscode] - 2026-05-04
 
 ### Added (VS Code)

@@ -13,8 +13,31 @@ export function runModelCommand() {
     }
 
     const document = editor.document;
-    if (!document.fileName.endsWith('.mod')) {
-        vscode.window.showErrorMessage('Active file is not an OPL .mod file.');
+    const fileName = document.fileName;
+    let modPath = '';
+    let datPath = '';
+
+    if (fileName.endsWith('.mod')) {
+        modPath = fileName;
+        const directory = path.dirname(modPath);
+        const baseName = path.basename(modPath, '.mod');
+        const potentialDat = path.join(directory, `${baseName}.dat`);
+        if (fs.existsSync(potentialDat)) {
+            datPath = potentialDat;
+        }
+    } else if (fileName.endsWith('.dat')) {
+        datPath = fileName;
+        const directory = path.dirname(datPath);
+        const baseName = path.basename(datPath, '.dat');
+        const potentialMod = path.join(directory, `${baseName}.mod`);
+        if (fs.existsSync(potentialMod)) {
+            modPath = potentialMod;
+        } else {
+            vscode.window.showErrorMessage(`Nie znaleziono pasującego pliku .mod dla ${path.basename(fileName)}`);
+            return;
+        }
+    } else {
+        vscode.window.showErrorMessage('Otwarty plik nie jest modelem (.mod) ani danymi (.dat) OPL.');
         return;
     }
 
@@ -23,22 +46,15 @@ export function runModelCommand() {
         document.save();
     }
 
-    const modPath = document.fileName;
-    const directory = path.dirname(modPath);
-    const baseName = path.basename(modPath, '.mod');
-    const datPath = path.join(directory, `${baseName}.dat`);
-
     const oplrunPath = getOplrunPath();
-    
-    // Check if the path contains spaces, if so, quote it
     const escapedOplrunPath = oplrunPath.includes(' ') ? `"${oplrunPath}"` : oplrunPath;
 
     let command = `${escapedOplrunPath} "${modPath}"`;
-    if (fs.existsSync(datPath)) {
+    if (datPath) {
         command += ` "${datPath}"`;
-        vscode.window.showInformationMessage(`Running ${baseName}.mod with ${baseName}.dat`);
+        vscode.window.showInformationMessage(`Uruchamianie ${path.basename(modPath)} z ${path.basename(datPath)}`);
     } else {
-        vscode.window.showInformationMessage(`Running ${baseName}.mod`);
+        vscode.window.showInformationMessage(`Uruchamianie ${path.basename(modPath)}`);
     }
 
     if (!runTerminal || runTerminal.exitStatus !== undefined) {

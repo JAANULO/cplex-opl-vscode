@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { getSymbols } from '../utils/symbols';
 
 export class OplDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
     provideDocumentSymbols(
@@ -7,76 +8,45 @@ export class OplDocumentSymbolProvider implements vscode.DocumentSymbolProvider 
     ): vscode.ProviderResult<vscode.DocumentSymbol[]> {
         
         const symbols: vscode.DocumentSymbol[] = [];
+        const oplSymbols = getSymbols(document);
+
+        oplSymbols.forEach(s => {
+            // Pomijamy iteratory w widoku struktury (zbyt duży szum), 
+            // zostawiamy tylko istotne elementy modelu.
+            if (s.type === 'iterator') return;
+
+            const symbol = new vscode.DocumentSymbol(
+                s.name,
+                s.type,
+                s.kind,
+                s.range,
+                s.range
+            );
+            symbols.push(symbol);
+        });
+
+        // Dodatkowe skanowanie bloków, których nie mamy w getSymbols (np. execute)
         const text = document.getText();
-        
-        // Match variables, arrays, ranges, tuples
-        const varRegex = /^\s*(dvar\s+(?:int|float|boolean)(?:\+|)?|range|tuple|float|int|boolean)\s+([a-zA-Z_][a-zA-Z0-9_]*)/gm;
+        const blockRegex = /^\s*(execute|subject\s+to|constraints)\s*({|)/gm;
         let match;
-        while ((match = varRegex.exec(text)) !== null) {
-            const type = match[1];
-            const name = match[2];
+        while ((match = blockRegex.exec(text)) !== null) {
+            const blockName = match[1].trim();
             const pos = document.positionAt(match.index);
-            const range = new vscode.Range(pos, pos);
-            const symbol = new vscode.DocumentSymbol(
-                name,
-                type,
-                type.includes('dvar') ? vscode.SymbolKind.Variable : (type === 'tuple' ? vscode.SymbolKind.Struct : vscode.SymbolKind.Constant),
-                range,
-                range
-            );
-            symbols.push(symbol);
-        }
-
-        // Match Objective
-        const objRegex = /^\s*(minimize|maximize)\s+([a-zA-Z_][a-zA-Z0-9_]*|)/gm;
-        while ((match = objRegex.exec(text)) !== null) {
-            const type = match[1];
-            const name = match[2] || 'Objective';
-            const pos = document.positionAt(match.index);
-            const range = new vscode.Range(pos, pos);
-            const symbol = new vscode.DocumentSymbol(
-                name,
-                type,
-                vscode.SymbolKind.Function,
-                range,
-                range
-            );
-            symbols.push(symbol);
-        }
-
-        // Match Subject To block
-        const stRegex = /^\s*(subject to)\s*\{/gm;
-        while ((match = stRegex.exec(text)) !== null) {
-            const pos = document.positionAt(match.index);
-            const range = new vscode.Range(pos, pos);
-            const symbol = new vscode.DocumentSymbol(
-                'Constraints',
-                'subject to',
-                vscode.SymbolKind.Namespace,
-                range,
-                range
-            );
-            symbols.push(symbol);
-        }
-
-        // Match Execute blocks
-        const execRegex = /^\s*(execute)\s*([a-zA-Z_][a-zA-Z0-9_]*|)\s*\{/gm;
-        while ((match = execRegex.exec(text)) !== null) {
-            const name = match[2] || 'Script';
-            const pos = document.positionAt(match.index);
-            const range = new vscode.Range(pos, pos);
-            const symbol = new vscode.DocumentSymbol(
-                name,
-                'execute',
-                vscode.SymbolKind.Method,
-                range,
-                range
-            );
-            symbols.push(symbol);
+            const range = new vscode.Range(pos, pos.translate(0, blockName.length));
+            
+            if (!symbols.some(s => s.name === blockName && s.range.start.line === range.start.line)) {
+                symbols.push(new vscode.DocumentSymbol(
+                    blockName,
+                    "Block",
+                    vscode.SymbolKind.Module,
+                    range,
+                    range
+                ));
+            }
         }
 
         // Sort symbols by line number to present them in document order
-        symbols.sort((a, b) => a.range.start.line - b.range.start.line);
+        symbols.sort((a: vscode.DocumentSymbol, b: vscode.DocumentSymbol) => a.range.start.line - b.range.start.line);
 
         return symbols;
     }

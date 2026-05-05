@@ -1,0 +1,14 @@
+{
+    "iconDefinitions": {
+        "oplMod": {
+            "iconPath": "./oplMod.svg"
+        },
+        "oplDat": {
+            "iconPath": "./oplDat.svg"
+        }
+    },
+    "fileExtensions": {
+        "mod": "oplMod",
+        "dat": "oplDat"
+    }
+}

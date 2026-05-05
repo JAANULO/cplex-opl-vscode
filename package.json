@@ -2,7 +2,8 @@
   "name": "cplex-opl",
   "displayName": "CPLEX OPL",
   "description": "Native support for IBM ILOG CPLEX Optimization Programming Language (OPL) in Visual Studio Code.",
-  "version": "1.4.3",
+  "version": "1.5.0",
+  "icon": "images/pluginIcon.svg",
   "publisher": "Janulo",
   "license": "MIT",
   "repository": {
@@ -10,13 +11,17 @@
     "url": "https://github.com/JAANULO/cplex-opl-vscode.git"
   },
   "engines": {
-    "vscode": "^1.118.0"
+    "vscode": "^1.90.0"
   },
   "categories": [
     "Programming Languages",
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:opl",
+    "onFile:*.mod",
+    "onFile:*.dat"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "languages": [
@@ -45,17 +50,36 @@
         "command": "cplex-opl-vscode.runModel",
         "title": "Run OPL Model",
         "icon": "$(play)"
+      },
+      {
+        "command": "cplex-opl-vscode.generateDatSkeleton",
+        "title": "Generate .dat Skeleton",
+        "icon": "$(new-file)"
       }
     ],
     "menus": {
       "editor/title/run": [
         {
           "command": "cplex-opl-vscode.runModel",
-          "when": "resourceExtname == .mod",
+          "when": "resourceExtname == .mod || resourceExtname == .dat",
           "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "cplex-opl-vscode.generateDatSkeleton",
+          "when": "resourceExtname == .mod",
+          "group": "cplex@1"
         }
       ]
     },
+    "fileIconThemes": [
+      {
+        "id": "opl-icons",
+        "label": "CPLEX OPL Icons",
+        "path": "./images/opl-icons.json"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "CPLEX OPL",

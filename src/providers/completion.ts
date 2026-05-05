@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { getAvailableSymbols } from '../utils/symbols';
 
 export class OplCompletionItemProvider implements vscode.CompletionItemProvider {
     provideCompletionItems(
@@ -30,6 +31,17 @@ export class OplCompletionItemProvider implements vscode.CompletionItemProvider 
             const item = new vscode.CompletionItem(func, vscode.CompletionItemKind.Function);
             item.insertText = new vscode.SnippetString(`${func}($1)`);
             completionItems.push(item);
+        });
+
+        // Contextual Autocomplete: Use the new scope-aware symbol utility
+        const availableSymbols = getAvailableSymbols(document, position);
+        availableSymbols.forEach(symbol => {
+            // Avoid duplicates in completion list
+            if (!completionItems.find(item => item.label === symbol.name)) {
+                const item = new vscode.CompletionItem(symbol.name, symbol.kind === vscode.SymbolKind.Variable ? vscode.CompletionItemKind.Variable : vscode.CompletionItemKind.Constant);
+                item.detail = symbol.type;
+                completionItems.push(item);
+            }
         });
 
         return completionItems;

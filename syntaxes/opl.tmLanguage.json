@@ -50,8 +50,16 @@
         "keywords": {
             "patterns": [
                 {
-                    "match": "\\b(dvar|dexpr|minimize|maximize|subject to|forall|sum|if|else|execute|main|using|cp|allDifferent|pack|pulse|step|interval|sequence|in)\\b",
+                    "match": "\\b(dvar|dexpr|minimize|maximize|subject to|constraints|forall|sum|if|else|execute|main|using|cp|allDifferent|pack|pulse|step|interval|sequence|in|assert|include|sorted|ordered)\\b",
                     "name": "keyword.control.opl"
+                },
+                {
+                    "match": "\\b(min|max|abs|startOf|endOf|size|card|item|first|last|prev|next)\\b",
+                    "name": "support.function.opl"
+                },
+                {
+                    "match": "&&|\\|\\||!|==|!=|<=|>=|<|>|\\+|-|\\*|/|%|=",
+                    "name": "keyword.operator.opl"
                 }
             ]
         },

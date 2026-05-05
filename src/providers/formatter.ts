@@ -7,49 +7,36 @@ export class OplDocumentFormattingEditProvider implements vscode.DocumentFormatt
         token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.TextEdit[]> {
         
-        const edits: vscode.TextEdit[] = [];
-        let indentLevel = 0;
+        const fullText = document.getText();
         const indentString = options.insertSpaces ? ' '.repeat(options.tabSize) : '\t';
 
-        for (let i = 0; i < document.lineCount; i++) {
-            const line = document.lineAt(i);
-            const originalText = line.text;
-            let trimmedText = originalText.trim();
+        // 1. Basic spacing and standardization (whole document)
+        let formatted = fullText
+            .replace(/\s*=\s*/g, ' = ')
+            .replace(/\s*<=\s*/g, ' <= ')
+            .replace(/\s*>=\s*/g, ' >= ')
+            .replace(/  +/g, ' ');
 
-            if (trimmedText.length === 0) {
-                continue; // Skip empty lines for formatting
-            }
+        // 2. Re-apply indentation line by line
+        const lines = formatted.split('\n');
+        let indentLevel = 0;
+        const finalLines = lines.map(line => {
+            let trimmed = line.trim();
+            if (trimmed.length === 0) return '';
 
-            // Decrease indent if the line starts with a closing brace
-            if (trimmedText.startsWith('}')) {
-                indentLevel = Math.max(0, indentLevel - 1);
-            }
-
-            // Apply indentation
-            let newText = indentString.repeat(indentLevel) + trimmedText;
-
-            // Basic spacing rules:
-            // Ensure space after keywords like dvar, int, boolean
-            // Ensure space around operators like =, +, -, <=, >=, ==
-            newText = newText
-                .replace(/\s*([=+\-*/]|<=|>=|==|!=)\s*/g, ' $1 ')
-                .replace(/\s*;\s*/g, ';\n') // Standardize semicolon (though this could break things if inline, better to just trim spaces before ;)
-                .replace(/\s+;/g, ';');
+            if (trimmed.startsWith('}')) indentLevel = Math.max(0, indentLevel - 1);
             
-            // Re-collapse double spaces introduced by simple replacements
-            newText = newText.replace(/  +/g, ' ');
+            const result = indentString.repeat(indentLevel) + trimmed;
+            
+            if (trimmed.endsWith('{')) indentLevel++;
+            return result;
+        });
 
-            // Increase indent if the line ends with an opening brace
-            if (trimmedText.endsWith('{')) {
-                indentLevel++;
-            }
+        const fullRange = new vscode.Range(
+            document.positionAt(0),
+            document.positionAt(fullText.length)
+        );
 
-            // Only create an edit if the line actually changed
-            if (newText !== originalText) {
-                edits.push(vscode.TextEdit.replace(line.range, newText));
-            }
-        }
-
-        return edits;
+        return [vscode.TextEdit.replace(fullRange, finalLines.join('\n'))];
     }
 }
