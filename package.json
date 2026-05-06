@@ -3,7 +3,7 @@
   "displayName": "CPLEX OPL",
   "description": "Native support for IBM ILOG CPLEX Optimization Programming Language (OPL) in Visual Studio Code.",
   "version": "1.5.0",
-  "icon": "images/pluginIcon.svg",
+  "icon": "images/pluginIcon.png",
   "publisher": "Janulo",
   "license": "MIT",
   "repository": {
