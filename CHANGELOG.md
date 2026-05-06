@@ -6,7 +6,7 @@
 
 ## [Unreleased]
 
-## [1.5.0] - 2026-05-05
+## [1.5.0] - 2026-05-06
 
 ### Added (VS Code)
 - **Intelligence Update:** Wdrożono `Find Usages` (ReferenceProvider) oraz `Rename Refactoring` (RenameProvider) dla wszystkich identyfikatorów OPL.
